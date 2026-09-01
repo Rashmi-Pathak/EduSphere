@@ -1,0 +1,144 @@
+
+> edusphere-dev-next-dashboard@0.1.0 lint
+> eslint .
+
+
+C:\Users\Ashish\Desktop\EduSphere\src\app\(dashboard)\list\assignments\[assignmentId]\submissions\AssignmentSubmissionScoreForm.tsx
+  25:5  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\Ashish\Desktop\EduSphere\src\app\(dashboard)\list\assignments\[assignmentId]\submissions\AssignmentSubmissionScoreForm.tsx:25:5
+  23 |
+  24 |   useEffect(() => {
+> 25 |     setScore(currentScore?.toString() ?? "0");
+     |     ^^^^^^^^ Avoid calling setState() directly within an effect
+  26 |   }, [currentScore]);
+  27 |
+  28 |   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {  react-hooks/set-state-in-effect
+
+C:\Users\Ashish\Desktop\EduSphere\src\app\(dashboard)\list\assignments\[assignmentId]\submissions\page.tsx
+  117:13  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+C:\Users\Ashish\Desktop\EduSphere\src\app\(dashboard)\list\exams\[examId]\submissions\[submissionId]\GradeClient.tsx
+  129:5  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\Ashish\Desktop\EduSphere\src\app\(dashboard)\list\exams\[examId]\submissions\[submissionId]\GradeClient.tsx:129:5
+  127 |
+  128 |   useEffect(() => {
+> 129 |     setScores((prev) => {
+      |     ^^^^^^^^^ Avoid calling setState() directly within an effect
+  130 |       const next = { ...prev };
+  131 |       for (const answer of answers) {
+  132 |         if (answer.score !== null && answer.score !== undefined) {  react-hooks/set-state-in-effect
+
+C:\Users\Ashish\Desktop\EduSphere\src\components\FinalGradeEditButton.tsx
+  40:7  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\Ashish\Desktop\EduSphere\src\components\FinalGradeEditButton.tsx:40:7
+  38 |     if (state.success) {
+  39 |       toast.success(state.message || t("updated"));
+> 40 |       setOpen(false);
+     |       ^^^^^^^ Avoid calling setState() directly within an effect
+  41 |       router.refresh();
+  42 |     } else if (state.error && state.message) {
+  43 |       toast.error(state.message);  react-hooks/set-state-in-effect
+
+C:\Users\Ashish\Desktop\EduSphere\src\components\StudyMaterialUpload.tsx
+  44:7  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\Ashish\Desktop\EduSphere\src\components\StudyMaterialUpload.tsx:44:7
+  42 |       toast.success(state.message);
+  43 |       formRef.current?.reset();
+> 44 |       setSelectedFileName("");
+     |       ^^^^^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  45 |       onSuccess?.();
+  46 |     } else if (state.error) {
+  47 |       toast.error(state.message);  react-hooks/set-state-in-effect
+
+C:\Users\Ashish\Desktop\EduSphere\src\components\SubmissionsModal.tsx
+   82:5   error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\Ashish\Desktop\EduSphere\src\components\SubmissionsModal.tsx:82:5
+  80 |   useEffect(() => {
+  81 |     if (!open) return;
+> 82 |     setLoading(true);
+     |     ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  83 |     fetch(`/api/submissions?assignmentId=${assignmentId}`)
+  84 |       .then((r) => r.json())
+  85 |       .then((data) => setSubmissions(Array.isArray(data) ? data : []))  react-hooks/set-state-in-effect
+  262:25  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           @next/next/no-img-element
+  334:29  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   react/no-unescaped-entities
+  334:38  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   react/no-unescaped-entities
+
+C:\Users\Ashish\Desktop\EduSphere\src\components\exam\ExamClient.tsx
+  107:6  warning  React Hook useEffect has a missing dependency: 't'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+C:\Users\Ashish\Desktop\EduSphere\src\components\forms\AssignmentForm.tsx
+  184:31  warning  Compilation Skipped: Use of incompatible library
+
+This API returns functions which cannot be memoized without leading to stale UI. To prevent this, by default React Compiler will skip memoizing this component/hook. However, you may see issues if values from this API are passed to other components/hooks that are memoized.
+
+C:\Users\Ashish\Desktop\EduSphere\src\components\forms\AssignmentForm.tsx:184:31
+  182 |
+  183 |   // مراقبة قيمة allowLateSubmission لتحديث الـ UI
+> 184 |   const allowLateSubmission = watch("allowLateSubmission");
+      |                               ^^^^^ React Hook Form's `useForm()` API returns a `watch()` function which cannot be memoized safely.
+  185 |
+  186 |   const onSubmit = handleSubmit(async (formValues) => {
+  187 |     const action = type === "create" ? createAssignment : updateAssignment;  react-hooks/incompatible-library
+  269:9   warning  The 'filteredClasses' conditional could make the dependencies of useMemo Hook (at line 284) change on every render. To fix this, wrap the initialization of 'filteredClasses' in its own useMemo() Hook                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              react-hooks/exhaustive-deps
+
+C:\Users\Ashish\Desktop\EduSphere\src\components\forms\ClassDeleteForm.tsx
+  116:6  warning  React Hook useEffect has a missing dependency: 't'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+C:\Users\Ashish\Desktop\EduSphere\src\components\forms\ExamWorkflowForm.tsx
+   76:9   warning  The 'correctAnswers' logical expression could make the dependencies of useMemo Hook (at line 95) change on every render. To fix this, wrap the initialization of 'correctAnswers' in its own useMemo() Hook                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  react-hooks/exhaustive-deps
+   76:9   warning  The 'correctAnswers' logical expression could make the dependencies of useMemo Hook (at line 101) change on every render. To fix this, wrap the initialization of 'correctAnswers' in its own useMemo() Hook                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 react-hooks/exhaustive-deps
+   82:9   warning  The 'currentOptions' logical expression could make the dependencies of useMemo Hook (at line 95) change on every render. To fix this, wrap the initialization of 'currentOptions' in its own useMemo() Hook                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  react-hooks/exhaustive-deps
+  594:28  warning  Compilation Skipped: Use of incompatible library
+
+This API returns functions which cannot be memoized without leading to stale UI. To prevent this, by default React Compiler will skip memoizing this component/hook. However, you may see issues if values from this API are passed to other components/hooks that are memoized.
+
+C:\Users\Ashish\Desktop\EduSphere\src\components\forms\ExamWorkflowForm.tsx:594:28
+  592 |   });
+  593 |
+> 594 |   const watchEnableTimer = watch("enableTimer");
+      |                            ^^^^^ React Hook Form's `useForm()` API returns a `watch()` function which cannot be memoized safely.
+  595 |   const watchSubjectId = watch("subjectId");
+  596 |   const watchTeacherId = watch("teacherId");
+  597 |   const watchClassIds = watch("classIds");  react-hooks/incompatible-library
+
+C:\Users\Ashish\Desktop\EduSphere\src\hooks\useRevealOnScroll.ts
+  35:32  warning  The ref value 'ref.current' will likely have changed by the time this effect cleanup function runs. If this ref points to a node rendered by React, copy 'ref.current' to a variable inside the effect, and use that variable in the cleanup function  react-hooks/exhaustive-deps
+
+✖ 18 problems (7 errors, 11 warnings)
+
