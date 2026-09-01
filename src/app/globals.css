@@ -1,0 +1,188 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --edusphere-ink: #24104f;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.edusphere-menu-scroll {
+  scrollbar-color: #7c3aed transparent;
+  scrollbar-width: thin;
+}
+
+.edusphere-menu-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+.edusphere-menu-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.edusphere-menu-scroll::-webkit-scrollbar-thumb {
+  background-color: #7c3aed;
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background-clip: content-box;
+}
+
+.edusphere-menu-scroll::-webkit-scrollbar-thumb:hover {
+  background-color: #3b1b76;
+}
+
+.react-calendar {
+  width: 100% !important;
+  border: none !important;
+  font-family: "Inter", sans-serif !important;
+}
+
+.react-calendar__navigation__label__labelText {
+  font-weight: 600;
+}
+
+.react-calendar__tile--active {
+  background-color: #c3ebfa !important;
+  color: black !important;
+}
+
+.rbc-btn-group:first-child {
+  display: none !important;
+}
+
+.rbc-toolbar-label {
+  text-align: right !important;
+  padding: 0px 20px !important;
+}
+
+.rbc-btn-group:last-child {
+  font-size: 13px !important;
+}
+
+.rbc-btn-group:last-child button {
+  border: none !important;
+  background-color: #f1f0ff !important;
+  margin-left: 2px !important;
+}
+
+.rbc-toolbar button.rbc-active {
+  background-color: #dbdafe !important;
+  box-shadow: none !important;
+}
+
+.rbc-time-view {
+  border-color: #eee !important;
+}
+
+.rbc-time-header {
+  display: flex !important;
+}
+
+.rbc-allday-cell {
+  display: none !important;
+}
+
+.rbc-time-content {
+  border: none !important;
+}
+
+.rbc-time-gutter.rbc-time-column {
+  font-size: 12px !important;
+}
+
+.rbc-time-gutter.rbc-time-column .rbc-timeslot-group {
+  padding: 0px 20px !important;
+  padding-top: 25px !important;
+}
+
+.rbc-time-gutter.rbc-time-column .rbc-label {
+  margin: 0 !important;
+}
+
+.rbc-timeslot-group {
+  background-color: #f7fdff !important;
+}
+
+.rbc-day-slot {
+  font-size: 14px !important;
+}
+
+.rbc-event {
+  border: none !important;
+  color: black !important;
+  /* padding: 10px !important;
+  margin: 10px !important;
+  width: 99% !important; */
+}
+
+.rbc-event:nth-child(1) {
+  background-color: #e2f8ff !important;
+}
+.rbc-event:nth-child(2) {
+  background-color: #fefce8 !important;
+}
+.rbc-event:nth-child(3) {
+  background-color: #f2f1ff !important;
+}
+.rbc-event:nth-child(4) {
+  background-color: #fdf2fb !important;
+}
+.rbc-event:nth-child(5) {
+  background-color: #e2f8ff !important;
+}
+.rbc-event:nth-child(6) {
+  background-color: #fefce8 !important;
+}
+.rbc-event:nth-child(7) {
+  background-color: #f2f1ff !important;
+}
+.rbc-event:nth-child(8) {
+  background-color: #fdf2fb !important;
+}
+
+.rbc-event-label {
+  color: gray !important;
+  margin-bottom: 5px;
+}
+
+.lesson-duration {
+  display: block;
+  color: gray;
+  margin-bottom: 5px;
+}
+
+.custom-shape-divider-bottom-1779710312 {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+  transform: rotate(180deg);
+}
+
+.custom-shape-divider-bottom-1779710312 svg {
+  position: relative;
+  display: block;
+  width: calc(126% + 1.3px);
+  height: 124px;
+}
+
+.custom-shape-divider-bottom-1779710312 .shape-fill {
+  fill: var(--edusphere-ink);
+}
+
+@keyframes titleReveal {
+  from {
+    opacity: 0;
+    transform: translateY(2rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
