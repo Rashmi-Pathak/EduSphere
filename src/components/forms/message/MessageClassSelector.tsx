@@ -1,0 +1,97 @@
+"use client";
+
+import { useTranslations } from "next-intl";
+
+type ClassOption = {
+  id: number;
+  name: string;
+};
+
+type MessageClassSelectorProps = {
+  classes: ClassOption[];
+  selectedClassIds: number[];
+  onChange: (nextClassIds: number[]) => void;
+};
+
+const MessageClassSelector = ({
+  classes,
+  selectedClassIds,
+  onChange,
+}: MessageClassSelectorProps) => {
+  const t = useTranslations("forms.message");
+  const commonT = useTranslations("forms.common");
+  const actionsT = useTranslations("actions");
+  const allSelected =
+    classes.length > 0 && selectedClassIds.length === classes.length;
+
+  const toggleClass = (classId: number, checked: boolean) => {
+    const next = checked
+      ? Array.from(new Set([...selectedClassIds, classId]))
+      : selectedClassIds.filter((id) => id !== classId);
+
+    onChange(next);
+  };
+
+  return (
+    <div className="flex flex-col gap-2 w-full">
+      <div className="flex justify-between items-center">
+        <label className="font-medium text-gray-700 text-sm">
+          {t("classesOptional")}
+        </label>
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => onChange(classes.map((cls) => cls.id))}
+            className="font-medium text-eduspherePurpleDark text-xs hover:underline"
+          >
+            {commonT("selectAll")}
+          </button>
+          {selectedClassIds.length > 0 && (
+            <button
+              type="button"
+              onClick={() => onChange([])}
+              className="font-medium text-eduspherePurpleDark text-xs hover:underline"
+            >
+              {actionsT("clear")}
+            </button>
+          )}
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-2 bg-white p-4 border-2 border-gray-200 rounded-lg max-h-[220px] overflow-y-auto">
+        <label className="flex items-center gap-2 mb-2 text-gray-700 text-sm">
+          <input
+            type="checkbox"
+            checked={allSelected}
+            onChange={(event) =>
+              event.target.checked
+                ? onChange(classes.map((cls) => cls.id))
+                : onChange([])
+            }
+            className="border-gray-300 rounded focus:ring-eduspherePurpleDark w-4 h-4 text-eduspherePurpleDark"
+          />
+          <span className="font-medium">{commonT("selectAll")}</span>
+        </label>
+
+        {classes.map((cls) => (
+          <label
+            key={cls.id}
+            className="flex items-center gap-2 text-gray-700 text-sm"
+          >
+            <input
+              type="checkbox"
+              checked={selectedClassIds.includes(cls.id)}
+              onChange={(event) => toggleClass(cls.id, event.target.checked)}
+              className="border-gray-300 rounded focus:ring-eduspherePurpleDark w-4 h-4 text-eduspherePurpleDark"
+            />
+            <span>{cls.name}</span>
+          </label>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default MessageClassSelector;
+
+

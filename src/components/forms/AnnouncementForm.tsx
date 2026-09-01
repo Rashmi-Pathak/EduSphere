@@ -1,0 +1,262 @@
+"use client";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Dispatch, SetStateAction, useMemo, useTransition } from "react";
+import { useForm, useWatch } from "react-hook-form";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
+import { createAnnouncement, updateAnnouncement } from "@/lib/actions";
+import { announcementSchema } from "@/lib/formValidationSchemas";
+import InputField from "../InputField";
+import { useTranslations } from "next-intl";
+
+const toDatetimeLocalValue = (value: unknown) => {
+  if (!value) return "";
+
+  const date = value instanceof Date ? value : new Date(String(value));
+  if (Number.isNaN(date.getTime())) return "";
+
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+
+  return `${year}-${month}-${day}T${hours}:${minutes}`;
+};
+
+const AnnouncementForm = ({
+  type,
+  data,
+  setOpen,
+  relatedData,
+}: {
+  type: "create" | "update";
+  data?: any;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+  relatedData?: any;
+}) => {
+  const t = useTranslations("forms.announcement");
+  const commonT = useTranslations("forms.common");
+  const actionsT = useTranslations("actions");
+  const nowDefault = toDatetimeLocalValue(new Date());
+  const dateDefaultValue =
+    type === "create" ? nowDefault : toDatetimeLocalValue(data?.date);
+
+  type AnnouncementFormValues = {
+    title: string;
+    description: string;
+    date: string;
+    classIds: number[];
+    id?: number;
+  };
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    control,
+    formState: { errors },
+  } = useForm<AnnouncementFormValues>({
+    resolver: zodResolver(announcementSchema),
+    defaultValues: {
+      id: data?.id,
+      title: data?.title,
+      description: data?.description,
+      date: dateDefaultValue,
+      classIds:
+        data?.classes?.map((classItem: { id: number }) => classItem.id) ?? [],
+    },
+  });
+
+  const router = useRouter();
+  const [isSubmitting, startTransition] = useTransition();
+
+  const onSubmit = handleSubmit((formValues) => {
+    const action = type === "create" ? createAnnouncement : updateAnnouncement;
+    const parsed = announcementSchema.parse(formValues);
+
+    startTransition(async () => {
+      try {
+        const result = await action({ success: false, error: false }, parsed);
+
+        if (result.success) {
+          toast(type === "create" ? t("created") : t("updated"));
+          setOpen(false);
+          router.refresh();
+          return;
+        }
+
+        toast.error(result.message ?? commonT("somethingWentWrong"));
+      } catch {
+        toast.error(commonT("somethingWentWrong"));
+      }
+    });
+  });
+
+  const classes = useMemo(() => relatedData?.classes ?? [], [relatedData]);
+  const watchedClassIds = useWatch({ control, name: "classIds" });
+  const classIdsRegister = register("classIds");
+
+  const selectedClassIdsAsNumbers = useMemo(
+    () =>
+      ((watchedClassIds ?? []) as Array<string | number>)
+        .map((id) => Number(id))
+        .filter((id) => !Number.isNaN(id)),
+    [watchedClassIds],
+  );
+
+  const classIds = useMemo<number[]>(
+    () => classes.map((cls: { id: number; name: string }) => cls.id),
+    [classes],
+  );
+
+  const areAllSelected =
+    classIds.length > 0 &&
+    classIds.every((id: number) => selectedClassIdsAsNumbers.includes(id));
+
+  const toggleAllClasses = (checked: boolean) => {
+    const selectedSet = new Set<number>(selectedClassIdsAsNumbers);
+
+    if (checked) {
+      for (const classId of classIds) {
+        selectedSet.add(classId);
+      }
+    } else {
+      for (const classId of classIds) {
+        selectedSet.delete(classId);
+      }
+    }
+
+    setValue("classIds", Array.from(selectedSet), {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
+  };
+
+  const toggleSingleClass = (classId: number, checked: boolean) => {
+    const selectedSet = new Set<number>(selectedClassIdsAsNumbers);
+
+    if (checked) {
+      selectedSet.add(classId);
+    } else {
+      selectedSet.delete(classId);
+    }
+
+    setValue("classIds", Array.from(selectedSet), {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
+  };
+
+  return (
+    <form className="flex flex-col gap-6" onSubmit={onSubmit}>
+      <h1 className="font-bold text-gray-900 text-2xl">
+        {type === "create" ? t("createTitle") : t("updateTitle")}
+      </h1>
+
+      {type === "update" && (
+        <input type="hidden" {...register("id")} defaultValue={data?.id} />
+      )}
+
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+        <InputField
+          label={t("title")}
+          name="title"
+          defaultValue={data?.title}
+          register={register}
+          error={errors?.title}
+          inputProps={{ placeholder: t("titlePlaceholder") }}
+        />
+
+        <InputField
+          label={commonT("date")}
+          name="date"
+          type="datetime-local"
+          defaultValue={dateDefaultValue}
+          register={register}
+          error={errors?.date}
+        />
+
+        <div className="flex flex-col gap-2 w-full">
+          <label className="font-medium text-gray-700 text-sm">
+            {commonT("classes")}
+          </label>
+          <div className="flex flex-col gap-2 p-3 rounded-md ring-[1.5px] ring-gray-300 max-h-[220px] overflow-y-auto">
+            <label className="flex items-center gap-2 mb-4 text-gray-700 text-sm">
+              <input
+                type="checkbox"
+                checked={areAllSelected}
+                onChange={(e) => toggleAllClasses(e.target.checked)}
+                disabled={classIds.length === 0}
+                className="border-gray-300 rounded focus:ring-blue-500 w-4 h-4 text-blue-500"
+              />
+              <span className="font-medium">{commonT("selectAll")}</span>
+            </label>
+            {classes.map((cls: { id: number; name: string }) => (
+              <label
+                key={cls.id}
+                className="flex items-center gap-2 text-gray-700 text-sm"
+              >
+                <input
+                  {...classIdsRegister}
+                  type="checkbox"
+                  value={cls.id}
+                  checked={selectedClassIdsAsNumbers.includes(cls.id)}
+                  onChange={(e) => toggleSingleClass(cls.id, e.target.checked)}
+                  className="border-gray-300 rounded focus:ring-blue-500 w-4 h-4 text-blue-500"
+                />
+                <span>{cls.name}</span>
+              </label>
+            ))}
+          </div>
+          {selectedClassIdsAsNumbers.length > 0 && (
+            <p className="text-gray-400 text-xs">
+              {commonT("selectedClasses", {
+                count: selectedClassIdsAsNumbers.length,
+              })}
+            </p>
+          )}
+          {errors.classIds?.message && (
+            <p className="font-medium text-red-500 text-xs">
+              {errors.classIds.message.toString()}
+            </p>
+          )}
+        </div>
+
+        <div className="flex flex-col gap-2 w-full">
+          <label className="font-medium text-gray-700 text-sm">
+            {commonT("description")}
+          </label>
+          <textarea
+            {...register("description")}
+            defaultValue={data?.description}
+            rows={4}
+            className="bg-white focus:bg-eduspherePurpleLight px-4 py-3 border-2 border-gray-200 focus:border-eduspherePurpleDark rounded-lg focus:outline-none focus:ring-0 w-full text-sm transition-all"
+            placeholder={t("descriptionPlaceholder")}
+          />
+          {errors.description?.message && (
+            <p className="font-medium text-red-500 text-xs">
+              {errors.description.message.toString()}
+            </p>
+          )}
+        </div>
+      </div>
+
+      <button
+        className="bg-eduspherePurpleDark disabled:opacity-60 hover:brightness-90 px-6 py-3 rounded-lg w-full font-semibold text-white text-base transition-all"
+        disabled={isSubmitting}
+      >
+        {isSubmitting
+          ? commonT("submitting")
+          : type === "create"
+            ? actionsT("create")
+            : actionsT("update")}
+      </button>
+    </form>
+  );
+};
+
+export default AnnouncementForm;
+
+
