@@ -63,11 +63,11 @@ const Navbar = ({
   const fallbackRole = authUser?.role ?? null;
 
   const fullName =
-    (isLoaded && user?.fullName) ||
-    (isLoaded && [user?.firstName, user?.lastName].filter(Boolean).join(" ")) ||
+    (isLoaded && ((user as any)?.fullName)) ||
+    (isLoaded && [((user as any)?.firstName), ((user as any)?.lastName)].filter(Boolean).join(" ")) ||
     authUser?.displayName ||
     fallbackName;
-  const imageUrl = authUser?.profileImageUrl || (isLoaded ? user?.imageUrl : undefined);
+  const imageUrl = authUser?.profileImageUrl || (isLoaded ? ((user as any)?.imageUrl) : undefined);
 
   const role =
     (isLoaded &&
