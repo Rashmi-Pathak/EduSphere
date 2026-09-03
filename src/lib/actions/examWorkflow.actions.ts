@@ -324,10 +324,10 @@ export const createExamWorkflow = async (
                   type: q.type,
                   points: q.points,
                   order: q.order,
-                  options: q.type === "FILE"
+                  options: JSON.stringify(q.type === "FILE"
                     ? (q.fileConfig ?? { allowedExtensions: [], minFileSizeMb: 0, maxFileSizeMb: EXAM_FILE_MAX_SIZE_MB, instructions: "" })
-                    : (q.options ?? []),
-                  correctAnswer: JSON.stringify(q.correctAnswer) ?? [],
+                    : (q.options ?? [])),
+                  correctAnswer: typeof q.correctAnswer === "string" ? q.correctAnswer : JSON.stringify(q.correctAnswer ?? []) ?? [],
                   allowMultiple: q.allowMultiple,
                   textAnswer: q.textAnswer,
                   schoolId: access.schoolId,
@@ -541,10 +541,10 @@ export const updateExamWorkflow = async (
               type: q.type,
               points: q.points,
               order: q.order,
-              options: q.type === "FILE"
+              options: JSON.stringify(q.type === "FILE"
                 ? (q.fileConfig ?? { allowedExtensions: [], minFileSizeMb: 0, maxFileSizeMb: EXAM_FILE_MAX_SIZE_MB, instructions: "" })
-                : (q.options ?? []),
-              correctAnswer: JSON.stringify(q.correctAnswer) ?? [],
+                : (q.options ?? [])),
+              correctAnswer: typeof q.correctAnswer === "string" ? q.correctAnswer : JSON.stringify(q.correctAnswer ?? []) ?? [],
               allowMultiple: q.allowMultiple,
               textAnswer: q.textAnswer,
               schoolId: access.schoolId,
@@ -577,10 +577,10 @@ export const updateExamWorkflow = async (
                     type: q.type,
                     points: q.points,
                     order: q.order,
-                    options: q.type === "FILE"
+                    options: JSON.stringify(q.type === "FILE"
                       ? (q.fileConfig ?? { allowedExtensions: [], minFileSizeMb: 0, maxFileSizeMb: EXAM_FILE_MAX_SIZE_MB, instructions: "" })
-                      : (q.options ?? []),
-                    correctAnswer: JSON.stringify(q.correctAnswer) ?? [],
+                      : (q.options ?? [])),
+                    correctAnswer: typeof q.correctAnswer === "string" ? q.correctAnswer : JSON.stringify(q.correctAnswer ?? []) ?? [],
                     allowMultiple: q.allowMultiple,
                     textAnswer: q.textAnswer,
                     schoolId: access.schoolId,
