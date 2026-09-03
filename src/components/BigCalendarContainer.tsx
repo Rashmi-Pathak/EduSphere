@@ -80,7 +80,7 @@ const BigCalendarContainer = async ({
             ? lesson.subject.name
             : `${lesson.subject.name}/${lesson.teacher.name}`,
       lessonName: lesson.name,
-      day: lesson.day,
+      day: lesson.day as any,
       start: lesson.startTime,
       end: lesson.endTime,
     }));
