@@ -42,9 +42,7 @@ export const useAuth = () => {
   };
 };
 
-export const useClerk = () => {
-  return {
-    signOut: () => signOut(),
+export const useClerk = () => { return { signOut: (...args: any[]) => signOut(args[0]),
   };
 };
 
