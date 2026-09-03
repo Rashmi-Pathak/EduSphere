@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { AiEvaluationStatus } from "@prisma/client";
+
 import {
   downloadCloudinaryUrlToBuffer,
   downloadPrivateCloudinaryFileToBuffer,
@@ -37,12 +37,12 @@ const failEvaluation = async ({
   const data = {
     schoolId,
     model,
-    status: AiEvaluationStatus.FAILED,
+    status: "FAILED",
     score: null,
     maxScore,
     feedback: null,
-    strengths: [],
-    weaknesses: [],
+    strengths: JSON.stringify([]),
+    weaknesses: JSON.stringify([]),
     needsReview: true,
     error,
   };
@@ -88,12 +88,12 @@ const saveEvaluation = async ({
   const data = {
     schoolId,
     model,
-    status: AiEvaluationStatus.SUGGESTED,
+    status: "SUGGESTED",
     score: suggestion.score,
     maxScore,
     feedback: suggestion.feedback,
-    strengths: suggestion.strengths,
-    weaknesses: suggestion.weaknesses,
+    strengths: JSON.stringify(suggestion.strengths),
+    weaknesses: JSON.stringify(suggestion.weaknesses),
     needsReview: suggestion.needsReview,
     error: null,
     approvedScore: null,
@@ -305,7 +305,7 @@ export async function approveExamAnswerAiEvaluation(
     await tx.aiEvaluation.update({
       where: { id: evaluationId },
       data: {
-        status: AiEvaluationStatus.APPROVED,
+        status: "",
         approvedScore: score,
         approvedFeedback: feedback?.trim() || evaluation.feedback,
         approvedBy: access.userId,
@@ -464,7 +464,7 @@ export async function approveAssignmentSubmissionAiEvaluation(
     await tx.aiEvaluation.update({
       where: { id: evaluationId },
       data: {
-        status: AiEvaluationStatus.APPROVED,
+        status: "",
         approvedScore: score,
         approvedFeedback: feedback?.trim() || evaluation.feedback,
         approvedBy: access.userId,
