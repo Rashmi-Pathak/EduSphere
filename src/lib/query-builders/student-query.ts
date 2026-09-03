@@ -9,7 +9,7 @@ type BuildStudentQueryInput = {
   userId: string;
 };
 
-const validStatuses: [] = [
+const validStatuses: string[] = [
   "ACTIVE",
   "REPEATED",
   "GRADUATED",
