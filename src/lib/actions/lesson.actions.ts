@@ -251,7 +251,7 @@ export const saveLessonSchedule = async (
           extractSlotFromStartTime(lesson.startTime, settings);
         if (!slot) continue;
 
-        existingByKey.set(scheduleKey(lesson.day, slot), {
+        existingByKey.set(scheduleKey(lesson.day as LessonScheduleSchema["entries"][number]["day"], slot), {
           id: lesson.id,
           subjectId: lesson.subjectId,
           teacherId: lesson.teacherId,
