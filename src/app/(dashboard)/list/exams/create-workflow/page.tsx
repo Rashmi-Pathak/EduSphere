@@ -100,7 +100,7 @@ export default async function CreateExamWorkflowPage({
         enableAutoSubmit: exam.enableAutoSubmit,
         questionsPerPage: exam.questionsPerPage,
         questions: exam.questions.map((question) => ({
-          type: question.type,
+          type: question.type as any,
           text: question.text,
           points: question.points,
           order: question.order,

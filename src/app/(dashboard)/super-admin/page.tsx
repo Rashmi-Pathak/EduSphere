@@ -1,6 +1,6 @@
 import Pagination from "@/components/Pagination";
-import SchoolStatusActions from "@/components/SchoolStatusActions";
-import SchoolStatusFilter from "@/components/SchoolStatusFilter";
+import Actions from "@/components/SchoolStatusActions";
+import Filter from "@/components/SchoolStatusFilter";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 import { enforceRouteAccess } from "@/lib/enforce-route-access";
@@ -8,16 +8,16 @@ import type { PageSearchParams } from "@/lib/pageParams";
 import { getQueryParam } from "@/lib/pageParams";
 import prisma from "@/lib/prisma";
 import { ITEM_PER_PAGE } from "@/lib/settings";
-import { School, SchoolStatus } from "@prisma/client";
+import { School, } from "@prisma/client";
 import { getTranslations } from "next-intl/server";
 
-const statusPillClass: Record<SchoolStatus, string> = {
+const statusPillClass: Record<string, string> = {
   PENDING: "bg-yellow-100 text-yellow-800",
   ACTIVE: "bg-green-100 text-green-800",
   PAUSED: "bg-red-100 text-red-800",
 };
 
-const StatusPill = ({ status }: { status: SchoolStatus }) => (
+const StatusPill = ({ status }: { status: string }) => (
   <span className={`px-2 py-1 rounded-full text-xs ${statusPillClass[status]}`}>
     {status}
   </span>
@@ -35,17 +35,17 @@ const SuperAdminPage = async ({
   const resolved = await searchParams;
   const page = Number.parseInt(getQueryParam(resolved.page) ?? "1", 10) || 1;
   const search = getQueryParam(resolved.search)?.trim() ?? "";
-  const status = getQueryParam(resolved.status) as SchoolStatus | undefined;
+  const status = getQueryParam(resolved.status) as | undefined;
 
   const where = {
     ...(search
       ? {
           OR: [
-            { name: { contains: search as const } },
+            { name: { contains: search  } },
             {
               admins: {
                 some: {
-                  username: { contains: search as const },
+                  username: { contains: search  },
                 },
               },
             },
@@ -74,7 +74,7 @@ const SuperAdminPage = async ({
         <h1 className="font-semibold text-lg">{pagesT("schools")}</h1>
         <div className="flex sm:flex-row flex-col sm:flex-wrap sm:items-center gap-2 w-fit">
           <TableSearch />
-          <SchoolStatusFilter />
+          <Filter />
         </div>
       </div>
 
@@ -112,7 +112,7 @@ const SuperAdminPage = async ({
               )}
 
               <div className="mt-3">
-                <SchoolStatusActions
+                <Actions
                   schoolId={school.id}
                   schoolName={school.name}
                   schoolStatus={school.status}
@@ -153,7 +153,7 @@ const SuperAdminPage = async ({
                 {school.pauseReason ?? "-"}
               </td>
               <td>
-                <SchoolStatusActions
+                <Actions
                   schoolId={school.id}
                   schoolName={school.name}
                   schoolStatus={school.status}

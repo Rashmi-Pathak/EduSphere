@@ -350,7 +350,7 @@ export default async function SubjectDetailPage({
   // إعدادات الصفحة
   const pageSettings = subject.pageSettings[0] ?? null;
   const sectionsOrder: string[] = (
-    (pageSettings?.sectionsOrder as string[]) ?? [
+    (pageSettings?.JSON.parse(sectionsOrder as string || "[]") as string[]) ?? [
       "materials",
       "assignments",
       "exams",
