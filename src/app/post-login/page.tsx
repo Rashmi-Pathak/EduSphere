@@ -2,11 +2,11 @@ import { auth } from "@/lib/clerk-mock-server";
 import { redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
 import { getRoleHome, type UserRole } from "@/lib/utils";
-import { SchoolStatus } from "@prisma/client";
+import { } from "@prisma/client";
 
-async function resolveRoleAndSchoolStatusFromDb(userId: string): Promise<{
+async function resolveRoleAndFromDb(userId: string): Promise<{
   role: UserRole | null;
-  schoolStatus: SchoolStatus | null;
+  schoolStatus: | null;
 }> {
   const [admin, teacher, student, parent] = await Promise.all([
     prisma.admin.findUnique({
@@ -44,7 +44,7 @@ export default async function PostLoginPage() {
 
   const roleFromClaims = (sessionClaims?.metadata as { role?: UserRole } | undefined)
     ?.role;
-  const resolved = await resolveRoleAndSchoolStatusFromDb(userId);
+  const resolved = await resolveRoleAndFromDb(userId);
   const role = roleFromClaims ?? resolved.role;
 
   if (role === "admin" || role === "teacher" || role === "student" || role === "parent") {
