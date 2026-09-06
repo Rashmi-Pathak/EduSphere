@@ -2,16 +2,6 @@
 
 EduSphere is a modern **School Management and Assessment System** designed to streamline academic operations and improve collaboration between administrators, teachers, students, and parents. It provides a centralized platform for managing users, classes, assessments, attendance, communication, and academic performance through dedicated role-based portals.
 
-<p align="center">
-  <img src="./assets/hero-dashboard.png" alt="EduSphere Dashboard" width="100%">
-</p>
-
----
-
-## 🚀 Live Demo
-
-🔗 https://edusphere-edu.vercel.app
-
 ---
 
 ## ✨ Features
